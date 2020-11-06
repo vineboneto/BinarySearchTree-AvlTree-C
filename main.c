@@ -4,13 +4,13 @@
 typedef struct sNodo {
     struct sNodo *left;
     struct sNodo *right;
-    int data;
+    int* data;
 } Nodo;
 
 Nodo* createNodo();
-void insert(Nodo*, int);
-int delete (Nodo*, int);
-Nodo* search(Nodo*, int);
+void insert(Nodo*, int*);
+int delete (Nodo*, int*);
+Nodo* search(Nodo*, int*);
 
 int getMin(Nodo*);
 
@@ -28,23 +28,12 @@ int main () {
     insert(root, 4);
     insert(root, 1);
 
-    Nodo* no = search(root, 6);
+    Nodo* no = search(root, 1);
     if (!no) {
         printf("Not found!\n");
     } else {
         printf("Searched element: %d\n", no->data);
     }
-
-    // free(no);
-    // delete(root, 2);
-
-    // Nodo* res = search(root, 2);
-    // if (res) {
-    //     printf("Found number: %d\n", res->data);
-    // } else {
-    //     printf("Not Found Number");
-    // }
-
 
     root = NULL;
     free(root);
@@ -56,6 +45,7 @@ Nodo* createNodo() {
     nd = (Nodo*) malloc(sizeof(Nodo));
     nd->left = NULL;
     nd->right = NULL;
+    nd->data = malloc(sizeof(int));
     if (!nd) {
         exit(EXIT_FAILURE);
         perror("Overflow!!!");
@@ -63,20 +53,8 @@ Nodo* createNodo() {
     return nd;
 }
 
-void insert(Nodo* root, int data) {
+void insert(Nodo* root, int* data) {
     Nodo* nodo;
-
-
-    // if (!root) {
-    //     root = createNodo();
-    //     root->data = data;
-    
-    // } else {
-    //     if (data > root->right) insert(root->right, data);
-
-    //     if (data < root->left) insert(root->left, data);
-    // }
-
     if (data > root->data) {
         if (root->right) { 
             insert(root->right, data);
@@ -96,7 +74,7 @@ void insert(Nodo* root, int data) {
     }
 }
 
-int delete(Nodo* root, int data) {
+int delete(Nodo* root, int* data) {
 
     Nodo* aux;
     Nodo* nodo = search(root, data);
@@ -123,7 +101,7 @@ int delete(Nodo* root, int data) {
 
 // Pegar o menor valor do ramo direitos
 int getMin(Nodo* root) {
-    int min;
+    int* min;
     
     if (!root->left) {
         min = root->data;
@@ -133,7 +111,7 @@ int getMin(Nodo* root) {
     return min;
 }
 
-Nodo* search(Nodo* root, int data) {
+Nodo* search(Nodo* root, int* data) {
     Nodo* nodo = NULL;
     if (root->data == data) {
         return root;
