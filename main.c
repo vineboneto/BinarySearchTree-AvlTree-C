@@ -24,19 +24,18 @@ int main () {
     insert(root, 12);
     insert(root, 7);
     insert(root, 6);
-    insert(root, 2);
     insert(root, 3);
     insert(root, 4);
     insert(root, 1);
 
+    Nodo* no = search(root, 6);
+    if (!no) {
+        printf("Not found!\n");
+    } else {
+        printf("Searched element: %d\n", no->data);
+    }
 
-    printf("Root: %d\n", root->data);
-    printf("Root-right: %d\n", root->right->data);
-    printf("Root-left: %d\n", root->left->data);
-    printf("Root-right-left: %d\n", root->right->left->data);
-    printf("Root-left-right: %d\n", root->left->right->data);
-
-
+    // free(no);
     // delete(root, 2);
 
     // Nodo* res = search(root, 2);
@@ -131,18 +130,20 @@ int getMin(Nodo* root) {
     } else {
         min = getMin(root->left);
     }
-
     return min;
 }
 
 Nodo* search(Nodo* root, int data) {
-    if (root->data != data && !root->left && !root->right) {
-        return NULL;
-    }
-
+    Nodo* nodo = NULL;
     if (root->data == data) {
         return root;
+    } else if (data >= root->data) {
+        if (root->right) nodo = search(root->right, data);
+        else return NULL;
     } else {
-        data > root->data ? search(root->right, data) : search(root->left, data);
+        if (root->left) nodo = search(root->left, data);
+        else return NULL;
     }
+
+    return nodo;
 }
