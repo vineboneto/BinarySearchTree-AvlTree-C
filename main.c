@@ -8,7 +8,7 @@ typedef struct sNodo {
 } Nodo;
 
 Nodo* createNodo();
-void insert(Nodo*, int*);
+Nodo* insert(Nodo*, int*);
 // Métodos utilizados para remoção
 void delete (Nodo*, int*);
 Nodo* getMin(Nodo*);
@@ -57,68 +57,56 @@ Nodo* createNodo() {
     return nd;
 }
 
-void insert(Nodo* root, int* data) {
-    Nodo* nodo;
-    if (data > root->data) {
-        if (root->right) { 
-            insert(root->right, data);
-        } else {
-            nodo = createNodo();
-            nodo->data = data;
-            root->right = nodo;
-        }
-    } else {
-        if (root->left) {
-            insert(root->left, data);
-        } else {
-            nodo = createNodo();
-            nodo->data = data;
-            root->left = nodo;
-        }
-    }
+Nodo* insert(Nodo* root, int* data) {
+    if (!root) {
+        root = createNodo();
+        root->data = data;
+    } 
+    else if (data < root->data) root->left = insert(root->left, data);
+    else root->right = insert(root->right, data);
 }
-// Pega Nodo anterior ao elemento anterior
-void delete(Nodo* root, int* data) {
-    if (root->data <= data) {
-        if (root->right->data == data) {
-            return root;
-        } else {
-            delete(root->right, data);
-        }
-    } else {
-        if (root->left->data == data) {
-            // O elemento possui filhos a equerda mas não a direita
-            if (root->left->left && !root->left->right) {
-                root->left = root->left->left;
-            // O elemento possui filhos a direita mas não a esquerda
-            } else if (root->left->right && !root->left->left) {
-                root->left = root->left->right;
-            } else {
-                Nodo* min = getMin(root->left->right);
-                min->left = root->left->left;
-                root->left = min;
-                printf("root->left: %d\n", root->left->data);
-                printf("min->left: %d\n", min->left->data);
-                printf("min->right: %d\n", min->right);
-            }
+// // Pega Nodo anterior ao elemento anterior
+// void delete(Nodo* root, int* data) {
+//     if (root->data <= data) {
+//         if (root->right->data == data) {
+//             return root;
+//         } else {
+//             delete(root->right, data);
+//         }
+//     } else {
+//         if (root->left->data == data) {
+//             // O elemento possui filhos a equerda mas não a direita
+//             if (root->left->left && !root->left->right) {
+//                 root->left = root->left->left;
+//             // O elemento possui filhos a direita mas não a esquerda
+//             } else if (root->left->right && !root->left->left) {
+//                 root->left = root->left->right;
+//             } else {
+//                 Nodo* min = getMin(root->left->right);
+//                 min->left = root->left->left;
+//                 root->left = min;
+//                 printf("root->left: %d\n", root->left->data);
+//                 printf("min->left: %d\n", min->left->data);
+//                 printf("min->right: %d\n", min->right);
+//             }
 
-            free(root->left);
-        }
-    }
-}
+//             free(root->left);
+//         }
+//     }
+// }
 
 
-// Pegar o menor valor do ramo direitos
-Nodo* getMin(Nodo* root) {
-    Nodo* min;
+// // Pegar o menor valor do ramo direitos
+// Nodo* getMin(Nodo* root) {
+//     Nodo* min;
     
-    if (!root->left) {
-        return root;
-    } else {
-        min = getMin(root->left);
-    }
-    return min;
-}
+//     if (!root->left) {
+//         return root;
+//     } else {
+//         min = getMin(root->left);
+//     }
+//     return min;
+// }
 
 Nodo* search(Nodo* root, int* data) {
     if (root == NULL) return NULL;
