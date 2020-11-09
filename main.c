@@ -9,12 +9,9 @@ typedef struct sNodo {
 
 Nodo* createNodo();
 Nodo* insert(Nodo*, int*);
-// Métodos utilizados para remoção
 Nodo* delete (Nodo*, int*);
-Nodo* getMin(Nodo*);
-Nodo* getOld(Nodo*, int*);
-
 Nodo* search(Nodo*, int*);
+void show(Nodo*);
 
 
 int main () {
@@ -34,17 +31,12 @@ int main () {
     insert(root, 4);
     insert(root, 2);
     insert(root, 1);
-    Nodo* aux = delete(root, 3);
-
-    if (!aux) {
-        printf("Nao deletado\n");
-    } else {
-        printf("Elemento deletado\n");
-    }
 
 
-    aux = search(root, 3);
-    aux == NULL ? printf("Nao encontarado\n") : printf("Elemento encontrado %d!\n", aux->data);
+    show(root);
+
+    // aux = search(root, 3);
+    // aux == NULL ? printf("Nao encontarado\n") : printf("Elemento encontrado %d!\n", aux->data);
     
     root = NULL;
     free(root);
@@ -116,4 +108,12 @@ Nodo* search(Nodo* root, int* data) {
     else if (root->data > data) return search(root->left, data);
     else if (root->data < data) return search(root->right, data);
     else return root;
+}
+
+void show(Nodo* root) {
+    if (root) {
+        show(root->left);
+        printf(" %d\n", root->data);
+        show(root->right);
+    }
 }
