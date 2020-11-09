@@ -64,6 +64,8 @@ Nodo* insert(Nodo* root, int* data) {
     } 
     else if (data < root->data) root->left = insert(root->left, data);
     else root->right = insert(root->right, data);
+
+    return root;
 }
 // // Pega Nodo anterior ao elemento anterior
 // void delete(Nodo* root, int* data) {
