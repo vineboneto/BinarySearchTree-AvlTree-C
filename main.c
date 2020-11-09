@@ -10,7 +10,7 @@ typedef struct sNodo {
 Nodo* createNodo();
 Nodo* insert(Nodo*, int*);
 // Métodos utilizados para remoção
-void delete (Nodo*, int*);
+Nodo* delete (Nodo*, int*);
 Nodo* getMin(Nodo*);
 Nodo* getOld(Nodo*, int*);
 
@@ -34,10 +34,17 @@ int main () {
     insert(root, 4);
     insert(root, 2);
     insert(root, 1);
+    Nodo* aux = delete(root, 3);
+
+    if (!aux) {
+        printf("Nao deletado\n");
+    } else {
+        printf("Elemento deletado\n");
+    }
 
 
-    Nodo* aux = search(root, 6);
-    aux == NULL ? printf("Não encontarado") : printf("Elemento encontrado %d!\n", aux->data);
+    aux = search(root, 3);
+    aux == NULL ? printf("Nao encontarado\n") : printf("Elemento encontrado %d!\n", aux->data);
     
     root = NULL;
     free(root);
@@ -67,48 +74,42 @@ Nodo* insert(Nodo* root, int* data) {
 
     return root;
 }
-// // Pega Nodo anterior ao elemento anterior
-// void delete(Nodo* root, int* data) {
-//     if (root->data <= data) {
-//         if (root->right->data == data) {
-//             return root;
-//         } else {
-//             delete(root->right, data);
-//         }
-//     } else {
-//         if (root->left->data == data) {
-//             // O elemento possui filhos a equerda mas não a direita
-//             if (root->left->left && !root->left->right) {
-//                 root->left = root->left->left;
-//             // O elemento possui filhos a direita mas não a esquerda
-//             } else if (root->left->right && !root->left->left) {
-//                 root->left = root->left->right;
-//             } else {
-//                 Nodo* min = getMin(root->left->right);
-//                 min->left = root->left->left;
-//                 root->left = min;
-//                 printf("root->left: %d\n", root->left->data);
-//                 printf("min->left: %d\n", min->left->data);
-//                 printf("min->right: %d\n", min->right);
-//             }
 
-//             free(root->left);
-//         }
-//     }
-// }
-
-
-// // Pegar o menor valor do ramo direitos
-// Nodo* getMin(Nodo* root) {
-//     Nodo* min;
-    
-//     if (!root->left) {
-//         return root;
-//     } else {
-//         min = getMin(root->left);
-//     }
-//     return min;
-// }
+Nodo* delete(Nodo* root, int* data) {
+    if (!root) return NULL;
+    else if (root->data > data) root->left = delete(root->left, data);
+    else if (root->data < data) root->right = delete(root->right, data);
+    else {
+        // Sem Filhos
+        if (!root->left && !root->right) {
+            free(root);
+            root = NULL;
+        }
+        // So filhos a direita
+        else if (!root->left) {
+            Nodo* aux = root;
+            root = root->right;
+            free(aux);
+        }
+        // So tem filhos a esquerda 
+        else if (!root->right) {
+            Nodo* aux = root;
+            root = root->left;
+            free(aux);
+        }
+        // Tem os dois filhos
+        else {
+            Nodo* aux = root->right;
+            while (aux->left != NULL) {
+                aux = aux->left;
+            }
+            root->data = aux->data; // troca informações
+            aux->data = data;
+            root->right = delete(root->right, data);
+        }
+    } 
+    return root;
+}
 
 Nodo* search(Nodo* root, int* data) {
     if (root == NULL) return NULL;
