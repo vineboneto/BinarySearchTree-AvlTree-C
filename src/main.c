@@ -10,7 +10,7 @@ typedef struct sBook {
 typedef struct sNodo {
     struct sNodo *left;
     struct sNodo *right;
-    Book* data;
+    Book* book;
 } Nodo;
 
 
@@ -39,6 +39,7 @@ Nodo* createNodo() {
     Nodo* n = NULL;
     n = (Nodo*) malloc(sizeof(Nodo));
     n->left = n->right = NULL;
+    n->book = createBook();
     if (!n) {
         exit(EXIT_FAILURE);
         perror("Overflow!!!");
