@@ -13,6 +13,8 @@ typedef struct sNodo {
     Book* book;
 } Nodo;
 
+int menu();
+
 Nodo* createNodo();
 Book* createBook();
 Nodo* insert(Nodo*, Book*);
@@ -32,14 +34,23 @@ int main () {
     Nodo* root = NULL;
     Book* book = createBook();
     root = insert(root, book);
-    printf("Root: \n");
-    printf("issn: %d\n", root->book->issn);
-    printf("year: %d\n", root->book->year);
-    printf("name: %s\n", root->book->name);
 
     root = deleteAll(root);
     system("pause");
     return 0;
+}
+
+int menu() {
+    int opc;
+    printf("1 -> Inserir livro\n");
+    printf("2 -> Deletar livro\n");
+    printf("3 -> Pesquisar livro por ISSN\n");
+    printf("4 -> Exibir livros em ordem\n");
+    printf("4 -> Exibir livros em pré-ordem\n");
+    printf("4 -> Exibir livros em pós-ordem\n");
+    printf("Digite uma opcao: ");
+    scanf("%d", &opc);
+    return opc;
 }
 
 Nodo* createNodo() {
