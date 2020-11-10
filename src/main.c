@@ -35,6 +35,7 @@ int main () {
     Book* book = createBook();
     root = insert(root, book);
 
+
     root = deleteAll(root);
     system("pause");
     return 0;
@@ -47,7 +48,8 @@ int menu() {
     printf("3 -> Pesquisar livro por ISSN\n");
     printf("4 -> Exibir livros em ordem\n");
     printf("4 -> Exibir livros em pré-ordem\n");
-    printf("4 -> Exibir livros em pós-ordem\n");
+    printf("5 -> Exibir livros em pós-ordem\n");
+    printf("6 -> Encerrar\n");
     printf("Digite uma opcao: ");
     scanf("%d", &opc);
     return opc;
