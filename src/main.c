@@ -47,7 +47,7 @@ Nodo* createNodo() {
 }
 
 Book* createBook() {
-    Book* b;
+    Book* b = NULL;
     size_t bytes = 256;
     b = malloc(sizeof(Book));
     if (!b) {
