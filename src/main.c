@@ -24,7 +24,7 @@ Nodo* deleteAll(Nodo*);
 void getDataBook();
 void displayBook(Book*);
 
-Nodo* search(Nodo*, Book*);
+Nodo* search(Nodo*, int);
 void order(Nodo*);
 void preOrder(Nodo*);
 void posOrder(Nodo*);
@@ -45,6 +45,16 @@ int main () {
             }
             // Deletar
             case 2: {
+                //Verifica se o livro existe
+                int issn; 
+                printf("Digite o ISSN: ");
+                scanf("%d", &issn);
+                Nodo* nodo = search(root, issn);
+                if (!nodo) printf("Elemento não existe!!\n");
+                else {
+                    printf("Elemento deletado %d !\n", nodo->book->issn);
+                    root = delete(root, nodo->book);
+                }
                 break;
             }
             // Pesquisar por ISSN
@@ -183,10 +193,10 @@ Nodo* delete(Nodo* root, Book* book) {
     return root;
 }
 
-Nodo* search(Nodo* root, Book* book) {
+Nodo* search(Nodo* root, int issn) {
     if (!root) return NULL;
-    else if (root->book->issn > book->issn) return search(root->left, book);
-    else if (root->book->issn < book->issn) return search(root->right, book);
+    else if (root->book->issn > issn) return search(root->left, issn);
+    else if (root->book->issn < issn) return search(root->right, issn);
     else return root;
 }
 
