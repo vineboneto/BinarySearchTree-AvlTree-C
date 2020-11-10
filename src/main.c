@@ -32,13 +32,15 @@ void posOrder(Nodo*);
 int main () {
 
     Nodo* root = NULL;
-    Book* book = createBook();
-    root = insert(root, book);
+    
     int opc = 0;
-    while (opc != 6) {
+    while (opc != 7) {
+        opc = menu();
         switch(opc) {
             // Inserir
             case 1: {
+                Book* book = createBook();
+                root = insert(root, book);
                 break;
             }
             // Deletar
@@ -51,6 +53,7 @@ int main () {
             }   
             // Exibir em ordem
             case 4: {
+                order(root);
                 break;
             }
             // Exibir em pré-ordem
@@ -63,16 +66,19 @@ int main () {
             }
             // Encerrar
             case 7: {
+                root = deleteAll(root);
+                printf("Programa Encerrado!!\n");
                 break;
             }
             default: {
                 printf("Opcao invalida\n");
             }
         }
+        system("pause");
+        system("cls");
     }
 
     root = deleteAll(root);
-    system("pause");
     return 0;
 }
 
@@ -82,8 +88,8 @@ int menu() {
     printf("2 -> Deletar livro\n");
     printf("3 -> Pesquisar livro por ISSN\n");
     printf("4 -> Exibir livros em ordem\n");
-    printf("5 -> Exibir livros em pré-ordem\n");
-    printf("6 -> Exibir livros em pós-ordem\n");
+    printf("5 -> Exibir livros em pre-ordem\n");
+    printf("6 -> Exibir livros em pos-ordem\n");
     printf("7 -> Encerrar\n");
     printf("Digite uma opcao: ");
     scanf("%d", &opc);
@@ -125,7 +131,6 @@ void getDataBook(Book* b) {
 
 Nodo* insert(Nodo* root, Book* book) {
     if (!root) {
-        printf("Entrou aqui.\n");
         root = createNodo();
         root->book = book;
     } 
@@ -143,6 +148,8 @@ Nodo* delete(Nodo* root, Book* book) {
         // Sem Filhos
         if (!root->left && !root->right) {
             free(root);
+            free(root->book);
+            free(root->book->name);
             root = NULL;
         }
         // So filhos a direita
@@ -150,12 +157,16 @@ Nodo* delete(Nodo* root, Book* book) {
             Nodo* aux = root;
             root = root->right;
             free(aux);
+            free(aux->book);
+            free(aux->book->name);
         }
         // So tem filhos a esquerda 
         else if (!root->right) {
             Nodo* aux = root;
             root = root->left;
             free(aux);
+            free(aux->book);
+            free(aux->book->name);
         }
         // Tem os dois filhos
         else {
