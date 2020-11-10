@@ -32,6 +32,16 @@ int main () {
     insert(root, 2);
     insert(root, 1);
 
+    delete(root, 5);
+    Nodo* aux = search(root, 5);
+    if (!aux) {
+        printf("Not found!\n");
+    } else {
+        printf("Found!\n");
+    }
+        printf("%d\n", root->data);
+
+
 
     show(root);
 
