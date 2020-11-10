@@ -52,6 +52,7 @@ Book* createBook() {
     b = malloc(sizeof(Book));
     if (!b) {
         exit(EXIT_FAILURE);
+        perror("Overflow!!");
     }
     b->name = malloc(bytes);
     return b;
