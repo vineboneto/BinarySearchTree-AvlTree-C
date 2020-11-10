@@ -46,6 +46,17 @@ Nodo* createNodo() {
     return n;
 }
 
+Book* createBook() {
+    Book* b;
+    size_t bytes = 256;
+    b = malloc(sizeof(Book));
+    if (!b) {
+        exit(EXIT_FAILURE);
+    }
+    b->name = malloc(bytes);
+    return b;
+}
+
 Nodo* insert(Nodo* root, int data) {
     if (!root) {
         root = createNodo();
