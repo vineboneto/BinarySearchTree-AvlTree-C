@@ -35,11 +35,8 @@ int main () {
     insert(root, 2);
     insert(root, 1);
 
+    
     root = deleteAll(root);
-
-    printf("root: %d\n", root);
-    printf("root: %d\n", root->right);
-    printf("root: %d\n", root->left);
     return 0;
 }
 
