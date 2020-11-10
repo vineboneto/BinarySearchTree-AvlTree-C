@@ -35,8 +35,11 @@ int main () {
     insert(root, 2);
     insert(root, 1);
 
-    
+    printf("root: %d\n", root->data);
     root = deleteAll(root);
+    printf("root: %d\n", root);
+
+    system("pause");
     return 0;
 }
 
@@ -112,7 +115,6 @@ Nodo* deleteAll(Nodo* root) {
         root->right = deleteAll(root->right);
         printf("Elemento deletado %d\n", root->data);
         free(root);
-        return NULL;
     }
     return NULL;
 }
