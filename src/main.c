@@ -4,17 +4,18 @@
 typedef struct sNodo {
     struct sNodo *left;
     struct sNodo *right;
-    int* data;
+    int data;
 } Nodo;
 
 Nodo* createNodo();
-Nodo* insert(Nodo*, int*);
-Nodo* delete (Nodo*, int*);
-Nodo* search(Nodo*, int*);
+Nodo* insert(Nodo*, int);
+Nodo* delete (Nodo*, int);
+Nodo* deleteAll(Nodo*);
+
+Nodo* search(Nodo*, int);
 void order(Nodo*);
 void preOrder(Nodo*);
 void posOrder(Nodo*);
-
 
 int main () {
 
@@ -34,11 +35,11 @@ int main () {
     insert(root, 2);
     insert(root, 1);
 
-    preOrder(root);
+    root = deleteAll(root);
 
-    
-    root = NULL;
-    free(root);
+    printf("root: %d\n", root);
+    printf("root: %d\n", root->right);
+    printf("root: %d\n", root->left);
     return 0;
 }
 
@@ -46,7 +47,6 @@ Nodo* createNodo() {
     Nodo* n = NULL;
     n = (Nodo*) malloc(sizeof(Nodo));
     n->left = n->right = NULL;
-    n->data = malloc(sizeof(int));
     if (!n) {
         exit(EXIT_FAILURE);
         perror("Overflow!!!");
@@ -54,7 +54,7 @@ Nodo* createNodo() {
     return n;
 }
 
-Nodo* insert(Nodo* root, int* data) {
+Nodo* insert(Nodo* root, int data) {
     if (!root) {
         root = createNodo();
         root->data = data;
@@ -65,7 +65,7 @@ Nodo* insert(Nodo* root, int* data) {
     return root;
 }
 
-Nodo* delete(Nodo* root, int* data) {
+Nodo* delete(Nodo* root, int data) {
     if (!root) return NULL;
     else if (root->data > data) root->left = delete(root->left, data);
     else if (root->data < data) root->right = delete(root->right, data);
@@ -97,19 +97,31 @@ Nodo* delete(Nodo* root, int* data) {
             aux->data = data;
             root->right = delete(root->right, data);
         }
-    } 
+    }
+
     return root;
 }
 
-Nodo* search(Nodo* root, int* data) {
+Nodo* search(Nodo* root, int data) {
     if (root == NULL) return NULL;
     else if (root->data > data) return search(root->left, data);
     else if (root->data < data) return search(root->right, data);
     else return root;
 }
 
+Nodo* deleteAll(Nodo* root) {
+    if (root) {
+        root->left = deleteAll(root->left);
+        root->right = deleteAll(root->right);
+        printf("Elemento deletado %d\n", root->data);
+        free(root);
+        return NULL;
+    }
+    return NULL;
+}
+
 void order(Nodo* nodo) {
-    if(nodo) {
+    if (nodo) {
         order(nodo->left);
         printf("%d \n", nodo->data);
         order(nodo->right);
@@ -125,7 +137,7 @@ void preOrder(Nodo* nodo) {
 }
 
 void posOrder(Nodo* nodo) {
-    if(nodo) {
+    if (nodo) {
         posOrder(nodo->left);
         posOrder(nodo->right);
         printf("%d \n", nodo->data);
