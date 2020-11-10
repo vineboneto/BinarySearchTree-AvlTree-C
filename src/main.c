@@ -12,6 +12,7 @@ Nodo* insert(Nodo*, int*);
 Nodo* delete (Nodo*, int*);
 Nodo* search(Nodo*, int*);
 void order(Nodo*);
+void preOrder(Nodo*);
 
 
 int main () {
@@ -32,7 +33,7 @@ int main () {
     insert(root, 2);
     insert(root, 1);
 
-    order(root);
+    preOrder(root);
 
     
     root = NULL;
@@ -111,5 +112,13 @@ void order(Nodo* nodo) {
         order(nodo->left);
         printf("%d \n", nodo->data);
         order(nodo->right);
+    }
+}
+
+void preOrder(Nodo* nodo) {
+    if (nodo) {
+        printf("%d \n", nodo->data);
+        preOrder(nodo->left);
+        preOrder(nodo->right);
     }
 }
