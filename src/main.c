@@ -34,7 +34,42 @@ int main () {
     Nodo* root = NULL;
     Book* book = createBook();
     root = insert(root, book);
-
+    int opc = 0;
+    while (opc != 6) {
+        switch(opc) {
+            // Inserir
+            case 1: {
+                break;
+            }
+            // Deletar
+            case 2: {
+                break;
+            }
+            // Pesquisar por ISSN
+            case 3: {
+                break;
+            }   
+            // Exibir em ordem
+            case 4: {
+                break;
+            }
+            // Exibir em pré-ordem
+            case 5: {
+                break;
+            }
+            // Exibir em pós-ordem
+            case 6: {
+                break;
+            }
+            // Encerrar
+            case 7: {
+                break;
+            }
+            default: {
+                printf("Opcao invalida\n");
+            }
+        }
+    }
 
     root = deleteAll(root);
     system("pause");
@@ -47,9 +82,9 @@ int menu() {
     printf("2 -> Deletar livro\n");
     printf("3 -> Pesquisar livro por ISSN\n");
     printf("4 -> Exibir livros em ordem\n");
-    printf("4 -> Exibir livros em pré-ordem\n");
-    printf("5 -> Exibir livros em pós-ordem\n");
-    printf("6 -> Encerrar\n");
+    printf("5 -> Exibir livros em pré-ordem\n");
+    printf("6 -> Exibir livros em pós-ordem\n");
+    printf("7 -> Encerrar\n");
     printf("Digite uma opcao: ");
     scanf("%d", &opc);
     return opc;
