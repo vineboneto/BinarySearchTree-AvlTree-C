@@ -13,22 +13,29 @@ typedef struct sNodo {
     Book* book;
 } Nodo;
 
-
-
 Nodo* createNodo();
-Nodo* insert(Nodo*, int);
-Nodo* delete (Nodo*, int);
+Book* createBook();
+Nodo* insert(Nodo*, Book*);
+Nodo* delete (Nodo*, Book*);
 Nodo* deleteAll(Nodo*);
 
-Nodo* search(Nodo*, int);
+void getDataBook();
+void displayBook(Book*);
+
+Nodo* search(Nodo*, Book*);
 void order(Nodo*);
 void preOrder(Nodo*);
 void posOrder(Nodo*);
 
 int main () {
 
-    Nodo* root = createNodo();
-    root->data = 5;
+    Nodo* root = NULL;
+    Book* book = createBook();
+    root = insert(root, book);
+    printf("Root: \n");
+    printf("issn: %d\n", root->book->issn);
+    printf("year: %d\n", root->book->year);
+    printf("name: %s\n", root->book->name);
 
     root = deleteAll(root);
     system("pause");
@@ -39,7 +46,6 @@ Nodo* createNodo() {
     Nodo* n = NULL;
     n = (Nodo*) malloc(sizeof(Nodo));
     n->left = n->right = NULL;
-    n->book = createBook();
     if (!n) {
         exit(EXIT_FAILURE);
         perror("Overflow!!!");
@@ -56,24 +62,35 @@ Book* createBook() {
         perror("Overflow!!");
     }
     b->name = malloc(bytes);
+    getDataBook(b);
     return b;
 }
 
-Nodo* insert(Nodo* root, int data) {
+void getDataBook(Book* b) {
+    printf("ISSN: ");
+    scanf("%d", &b->issn);
+    printf("Name: ");
+    scanf(" %[^\n]", b->name);
+    printf("Year: ");
+    scanf("%d", &b->year);
+}
+
+Nodo* insert(Nodo* root, Book* book) {
     if (!root) {
+        printf("Entrou aqui.\n");
         root = createNodo();
-        root->data = data;
+        root->book = book;
     } 
-    else if (data < root->data) root->left = insert(root->left, data);
-    else root->right = insert(root->right, data);
+    else if (book->issn < root->book->issn) root->left = insert(root->left, book);
+    else root->right = insert(root->right, book);
 
     return root;
 }
 
-Nodo* delete(Nodo* root, int data) {
+Nodo* delete(Nodo* root, Book* book) {
     if (!root) return NULL;
-    else if (root->data > data) root->left = delete(root->left, data);
-    else if (root->data < data) root->right = delete(root->right, data);
+    else if (root->book->issn > book->issn) root->left = delete(root->left, book);
+    else if (root->book->issn < book->issn) root->right = delete(root->right, book);
     else {
         // Sem Filhos
         if (!root->left && !root->right) {
@@ -98,19 +115,19 @@ Nodo* delete(Nodo* root, int data) {
             while (aux->left != NULL) {
                 aux = aux->left;
             }
-            root->data = aux->data; // troca informações
-            aux->data = data;
-            root->right = delete(root->right, data);
+            root->book = aux->book; // troca informações
+            aux->book = book;
+            root->right = delete(root->right, book);
         }
     }
 
     return root;
 }
 
-Nodo* search(Nodo* root, int data) {
+Nodo* search(Nodo* root, Book* book) {
     if (!root) return NULL;
-    else if (root->data > data) return search(root->left, data);
-    else if (root->data < data) return search(root->right, data);
+    else if (root->book->issn > book->issn) return search(root->left, book);
+    else if (root->book->issn < book->issn) return search(root->right, book);
     else return root;
 }
 
@@ -118,8 +135,10 @@ Nodo* deleteAll(Nodo* root) {
     if (root) {
         root->left = deleteAll(root->left);
         root->right = deleteAll(root->right);
-        printf("Elemento deletado %d\n", root->data);
+        printf("Elemento deletado %d\n", root->book->issn);
         free(root);
+        free(root->book);
+        free(root->book->name);
     }
     return NULL;
 }
@@ -127,14 +146,14 @@ Nodo* deleteAll(Nodo* root) {
 void order(Nodo* nodo) {
     if (nodo) {
         order(nodo->left);
-        printf("%d \n", nodo->data);
+        displayBook(nodo->book);
         order(nodo->right);
     }
 }
 
 void preOrder(Nodo* nodo) {
     if (nodo) {
-        printf("%d \n", nodo->data);
+        displayBook(nodo->book);
         preOrder(nodo->left);
         preOrder(nodo->right);
     }
@@ -144,6 +163,12 @@ void posOrder(Nodo* nodo) {
     if (nodo) {
         posOrder(nodo->left);
         posOrder(nodo->right);
-        printf("%d \n", nodo->data);
+        displayBook(nodo->book);
     }
+}
+
+void displayBook(Book* book) {
+    printf("issn: %d\n", book->issn);
+    printf("name: %s\n", book->name);
+    printf("year: %d\n", book->year);
 }
