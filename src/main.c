@@ -13,6 +13,7 @@ Nodo* delete (Nodo*, int*);
 Nodo* search(Nodo*, int*);
 void order(Nodo*);
 void preOrder(Nodo*);
+void posOrder(Nodo*);
 
 
 int main () {
@@ -120,5 +121,13 @@ void preOrder(Nodo* nodo) {
         printf("%d \n", nodo->data);
         preOrder(nodo->left);
         preOrder(nodo->right);
+    }
+}
+
+void posOrder(Nodo* nodo) {
+    if(nodo) {
+        posOrder(nodo->left);
+        posOrder(nodo->right);
+        printf("%d \n", nodo->data);
     }
 }
