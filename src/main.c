@@ -11,7 +11,7 @@ Nodo* createNodo();
 Nodo* insert(Nodo*, int*);
 Nodo* delete (Nodo*, int*);
 Nodo* search(Nodo*, int*);
-void show(Nodo*);
+void order(Nodo*);
 
 
 int main () {
@@ -32,18 +32,8 @@ int main () {
     insert(root, 2);
     insert(root, 1);
 
-    delete(root, 5);
-    Nodo* aux = search(root, 5);
-    if (!aux) {
-        printf("Not found!\n");
-    } else {
-        printf("Found!\n");
-    }
-        printf("%d\n", root->data);
+    order(root);
 
-
-
-    show(root);
     
     root = NULL;
     free(root);
@@ -116,10 +106,10 @@ Nodo* search(Nodo* root, int* data) {
     else return root;
 }
 
-void show(Nodo* root) {
-    if (root) {
-        show(root->left);
-        printf(" %d\n", root->data);
-        show(root->right);
+void order(Nodo* nodo) {
+    if(nodo) {
+        order(nodo->left);
+        printf("%d \n", nodo->data);
+        order(nodo->right);
     }
 }
