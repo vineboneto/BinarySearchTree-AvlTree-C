@@ -44,9 +44,6 @@ int main () {
 
 
     show(root);
-
-    // aux = search(root, 3);
-    // aux == NULL ? printf("Nao encontarado\n") : printf("Elemento encontrado %d!\n", aux->data);
     
     root = NULL;
     free(root);
