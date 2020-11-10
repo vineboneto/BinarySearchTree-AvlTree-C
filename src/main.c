@@ -54,16 +54,15 @@ int main () {
 }
 
 Nodo* createNodo() {
-    Nodo* nd = NULL;
-    nd = (Nodo*) malloc(sizeof(Nodo));
-    nd->left = NULL;
-    nd->right = NULL;
-    nd->data = malloc(sizeof(int));
-    if (!nd) {
+    Nodo* n = NULL;
+    n = (Nodo*) malloc(sizeof(Nodo));
+    n->left = n->right = NULL;
+    n->data = malloc(sizeof(int));
+    if (!n) {
         exit(EXIT_FAILURE);
         perror("Overflow!!!");
     }
-    return nd;
+    return n;
 }
 
 Nodo* insert(Nodo* root, int* data) {
