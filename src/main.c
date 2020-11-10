@@ -1,11 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct sBook {
+    int issn;
+    int year;
+    char* name;
+} Book;
+
 typedef struct sNodo {
     struct sNodo *left;
     struct sNodo *right;
-    int data;
+    Book* data;
 } Nodo;
+
+
 
 Nodo* createNodo();
 Nodo* insert(Nodo*, int);
@@ -22,23 +30,7 @@ int main () {
     Nodo* root = createNodo();
     root->data = 5;
 
-    insert(root, 10);
-    insert(root, 15);
-    insert(root, 16);
-    insert(root, 12);
-    insert(root, 11);
-    insert(root, 7);
-    insert(root, 8);
-    insert(root, 6);
-    insert(root, 3);
-    insert(root, 4);
-    insert(root, 2);
-    insert(root, 1);
-
-    printf("root: %d\n", root->data);
     root = deleteAll(root);
-    printf("root: %d\n", root);
-
     system("pause");
     return 0;
 }
@@ -103,7 +95,7 @@ Nodo* delete(Nodo* root, int data) {
 }
 
 Nodo* search(Nodo* root, int data) {
-    if (root == NULL) return NULL;
+    if (!root) return NULL;
     else if (root->data > data) return search(root->left, data);
     else if (root->data < data) return search(root->right, data);
     else return root;
