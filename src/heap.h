@@ -13,6 +13,8 @@ Nodo* insert(Nodo* root, Book* book);
 Nodo* delete (Nodo* root, Book* book);
 Nodo* deleteAll(Nodo* root);
 Nodo* search(Nodo* nodo, int issn);
+Nodo* withoutSon(Nodo* root);
+Nodo* onlyOneSon(Nodo* root, Nodo* rootDirection);
 
 void freeMemory(Nodo* nodo);
 void order(Nodo* root);
@@ -48,22 +50,11 @@ Nodo* delete(Nodo* root, Book* book) {
     else if (root->book->issn < book->issn) root->right = delete(root->right, book);
     else {
         // Sem Filhos
-        if (!root->left && !root->right) {
-            freeMemory(root);
-            root = NULL;
-        } 
-            // So filhos a direita
-        else if (!root->left) {
-            Nodo* aux = root;
-            root = root->right;
-            freeMemory(aux);
-        }
+        if (!root->left && !root->right) root = withoutSon(root);
+        // So filhos a direita
+        else if (!root->left) root = onlyOneSon(root, root->right);
         // So tem filhos a esquerda 
-        else if (!root->right) {
-            Nodo* aux = root;
-            root = root->left;
-            freeMemory(aux);
-        }
+        else if (!root->right) root = onlyOneSon(root, root->left);
         // Tem os dois filhos
         else {
             Nodo* aux = root->right;
@@ -76,6 +67,18 @@ Nodo* delete(Nodo* root, Book* book) {
         }
         
     }
+    return root;
+}
+
+Nodo* withoutSon(Nodo* root) {
+    freeMemory(root);
+    return NULL;
+}
+
+Nodo* onlyOneSon(Nodo* root, Nodo* rootDirection) {
+    Nodo* aux = root;
+    root = rootDirection;
+    freeMemory(aux);
     return root;
 }
 
