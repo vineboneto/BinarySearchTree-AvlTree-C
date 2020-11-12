@@ -31,6 +31,7 @@ void posOrder(Nodo*);
 
 int main () {
 
+    system("cls");
     Nodo* root = NULL;
     
     int opc = 0;
@@ -50,7 +51,7 @@ int main () {
                 printf("Digite o ISSN: ");
                 scanf("%d", &issn);
                 Nodo* nodo = search(root, issn);
-                if (!nodo) printf("Elemento não existe!!\n");
+                if (!nodo) printf("Elemento nao existe!!\n");
                 else {
                     printf("Elemento deletado %d !\n", nodo->book->issn);
                     root = delete(root, nodo->book);
@@ -59,6 +60,14 @@ int main () {
             }
             // Pesquisar por ISSN
             case 3: {
+                int issn;
+                printf("Digite o ISSN: ");
+                scanf("%d", &issn);
+                Nodo* nodo = search(root, issn);
+                if (!nodo) printf("Elemento nao existe!!\n");
+                else {
+                    displayBook(nodo->book);
+                }
                 break;
             }   
             // Exibir em ordem
@@ -68,10 +77,12 @@ int main () {
             }
             // Exibir em pré-ordem
             case 5: {
+                preOrder(root);
                 break;
             }
             // Exibir em pós-ordem
             case 6: {
+                posOrder(root);
                 break;
             }
             // Encerrar
@@ -184,12 +195,11 @@ Nodo* delete(Nodo* root, Book* book) {
             while (aux->left != NULL) {
                 aux = aux->left;
             }
-            root->book = aux->book; // troca informações
+            root->book = aux->book; // t mações
             aux->book = book;
             root->right = delete(root->right, book);
         }
     }
-
     return root;
 }
 
@@ -239,5 +249,5 @@ void posOrder(Nodo* nodo) {
 void displayBook(Book* book) {
     printf("issn: %d\n", book->issn);
     printf("name: %s\n", book->name);
-    printf("year: %d\n", book->year);
+    printf("year: %d\n\n", book->year);
 }
