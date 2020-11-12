@@ -1,15 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct sBook {
-    int issn;
-    int year;
-    char* name;
-} Book;
-
-Book* createBook();
-void getDataBook(Book*);
-void displayBook(Book*);
+#include "headers/book.h"
 
 Book* createBook() {
     Book* b = NULL;

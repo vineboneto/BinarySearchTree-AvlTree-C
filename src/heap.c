@@ -1,27 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "book.h"
+#include "headers/heap.h"
 
-typedef struct sNodo {
-    struct sNodo *left;
-    struct sNodo *right;
-    Book* book;
-} Nodo;
-
-Nodo* createNodo();
-Nodo* insert(Nodo* root, Book* book);
-Nodo* delete (Nodo* root, Book* book);
-Nodo* deleteAll(Nodo* root);
-Nodo* search(Nodo* nodo, int issn);
-Nodo* withoutSon(Nodo* root);
-Nodo* hasOneSon(Nodo* root, Nodo* rootDirection);
-Nodo* hasTwoSon(Nodo* root, Book* book);
-
-void freeMemory(Nodo* nodo);
-void order(Nodo* root);
-void preOrder(Nodo* root);
-void posOrder(Nodo* root);
-
+#include "book.c"
 
 Nodo* createNodo() {
     Nodo* n = NULL;
