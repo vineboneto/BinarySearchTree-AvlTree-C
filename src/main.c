@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include "heap.h"
 
-int menu();
-Nodo* createInsert(Nodo*);
-Nodo* createDelete(Nodo*);
-Nodo* select(Nodo*, int);
-void createSearch(Nodo*);
+int handleMenu();
+Nodo* handleInsert(Nodo*);
+Nodo* handleDelete(Nodo*);
+Nodo* handleSelect(Nodo*, int);
+void handleSearch(Nodo*);
 
 int main () {
     system("cls");
@@ -14,17 +14,17 @@ int main () {
 
     int opc = 0;
     while (opc != 7) {
-        opc = menu();
-        root = select(root, opc);
+        opc = handleMenu();
+        root = handleSelect(root, opc);
         system("pause");
         system("cls");
     }
-
+    // Remove todos os elementos da árvore
     root = deleteAll(root);
     return 0;
 }
 
-int menu() {
+int handleMenu() {
     int opc;
     printf("1 -> Inserir livro\n");
     printf("2 -> Deletar livro\n");
@@ -38,12 +38,12 @@ int menu() {
     return opc;
 }
 
-Nodo* createInsert(Nodo* root) {
+Nodo* handleInsert(Nodo* root) {
     Book* book = createBook();
     root = insert(root, book);
 }
 
-Nodo* createDelete(Nodo* root) {
+Nodo* handleDelete(Nodo* root) {
     //Verifica se o livro existe
     int issn; 
     printf("Digite o ISSN: ");
@@ -57,10 +57,11 @@ Nodo* createDelete(Nodo* root) {
     return root;
 }
 
-void createSearch(Nodo* root) {
+void handleSearch(Nodo* root) {
     int issn;
     printf("Digite o ISSN: ");
     scanf("%d", &issn);
+    // Procura nodo na árvore binária
     Nodo* nodo = search(root, issn);
     if (!nodo) printf("Elemento nao existe!!\n");
     else {
@@ -68,21 +69,21 @@ void createSearch(Nodo* root) {
     }
 }
 
-Nodo* select(Nodo* root, int opc) {
+Nodo* handleSelect(Nodo* root, int opc) {
     switch(opc) {
         // Inserir
         case 1: {
-            root = createInsert(root);
+            root = handleInsert(root);
             break;
         }
         // Deletar
         case 2: {
-            root = createDelete(root);
+            root = handleDelete(root);
             break;
         }
         // Pesquisar por ISSN
         case 3: {
-            createSearch(root);
+            handleSearch(root);
             break;
         }   
         // Exibir em ordem
