@@ -14,6 +14,7 @@ Nodo* delete (Nodo* root, Book* book);
 Nodo* deleteAll(Nodo* root);
 Nodo* search(Nodo* nodo, int issn);
 
+void freeMemory(Nodo* nodo);
 void order(Nodo* root);
 void preOrder(Nodo* root);
 void posOrder(Nodo* root);
@@ -48,26 +49,20 @@ Nodo* delete(Nodo* root, Book* book) {
     else {
         // Sem Filhos
         if (!root->left && !root->right) {
-            free(root);
-            free(root->book);
-            free(root->book->name);
+            freeMemory(root);
             root = NULL;
-        }
-        // So filhos a direita
+        } 
+            // So filhos a direita
         else if (!root->left) {
             Nodo* aux = root;
             root = root->right;
-            free(aux);
-            free(aux->book);
-            free(aux->book->name);
+            freeMemory(aux);
         }
         // So tem filhos a esquerda 
         else if (!root->right) {
             Nodo* aux = root;
             root = root->left;
-            free(aux);
-            free(aux->book);
-            free(aux->book->name);
+            freeMemory(aux);
         }
         // Tem os dois filhos
         else {
@@ -75,12 +70,19 @@ Nodo* delete(Nodo* root, Book* book) {
             while (aux->left != NULL) {
                 aux = aux->left;
             }
-            root->book = aux->book; // t mações
+            root->book = aux->book; // troca informações
             aux->book = book;
             root->right = delete(root->right, book);
         }
+        
     }
     return root;
+}
+
+void freeMemory(Nodo* nodo) {
+    free(nodo);
+    free(nodo->book);
+    free(nodo->book->name);
 }
 
 Nodo* search(Nodo* root, int issn) {

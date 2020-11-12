@@ -8,7 +8,7 @@ typedef struct sBook {
 } Book;
 
 Book* createBook();
-void getDataBook();
+void getDataBook(Book*);
 void displayBook(Book*);
 
 Book* createBook() {
