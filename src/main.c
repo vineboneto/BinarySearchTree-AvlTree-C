@@ -7,6 +7,7 @@ Nodo* handleInsert(Nodo*);
 Nodo* handleDelete(Nodo*);
 Nodo* handleSelect(Nodo*, int);
 void handleSearch(Nodo*);
+void handleShow(Nodo*, int);
 
 int main () {
     system("cls");
@@ -69,48 +70,25 @@ void handleSearch(Nodo* root) {
     }
 }
 
+void handleShow(Nodo* root, int opc) {
+    if (root) {
+        if (opc == 4) order(root);
+        else if (opc == 5) preOrder(root);
+        else posOrder(root);
+    } 
+    // Lista vazia
+    else printf("\nArvore Vazia!!\n");
+} 
+
 Nodo* handleSelect(Nodo* root, int opc) {
-    switch(opc) {
-        // Inserir
-        case 1: {
-            root = handleInsert(root);
-            break;
-        }
-        // Deletar
-        case 2: {
-            root = handleDelete(root);
-            break;
-        }
-        // Pesquisar por ISSN
-        case 3: {
-            handleSearch(root);
-            break;
-        }   
-        // Exibir em ordem
-        case 4: {
-            order(root);
-            break;
-        }
-        // Exibir em pré-ordem
-        case 5: {
-            preOrder(root);
-            break;
-        }
-        // Exibir em pós-ordem
-        case 6: {
-            posOrder(root);
-            break;
-        }
-        // Encerrar
-        case 7: {
-            root = deleteAll(root);
-            printf("Programa Encerrado!!\n");
-            break;
-        }
-        default: {
-            printf("Opcao invalida\n");
-        }
-    }
+
+    if (opc == 1) root = handleInsert(root);
+    else if (opc == 2) root = handleDelete(root);
+    else if (opc == 3) handleSearch(root);
+    else if (opc >= 4 && opc <=6) handleShow(root, opc);
+    else if (opc == 7) printf("Programa Encerrado!!\n");
+    else printf("Opcao invalida\n");
+
     return root;
 }
 
