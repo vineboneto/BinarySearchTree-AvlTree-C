@@ -14,7 +14,8 @@ Nodo* delete (Nodo* root, Book* book);
 Nodo* deleteAll(Nodo* root);
 Nodo* search(Nodo* nodo, int issn);
 Nodo* withoutSon(Nodo* root);
-Nodo* onlyOneSon(Nodo* root, Nodo* rootDirection);
+Nodo* hasOneSon(Nodo* root, Nodo* rootDirection);
+Nodo* hasTwoSon(Nodo* root, Book* book);
 
 void freeMemory(Nodo* nodo);
 void order(Nodo* root);
@@ -52,19 +53,11 @@ Nodo* delete(Nodo* root, Book* book) {
         // Sem Filhos
         if (!root->left && !root->right) root = withoutSon(root);
         // So filhos a direita
-        else if (!root->left) root = onlyOneSon(root, root->right);
+        else if (!root->left) root = hasOneSon(root, root->right);
         // So tem filhos a esquerda 
-        else if (!root->right) root = onlyOneSon(root, root->left);
+        else if (!root->right) root = hasOneSon(root, root->left);
         // Tem os dois filhos
-        else {
-            Nodo* aux = root->right;
-            while (aux->left != NULL) {
-                aux = aux->left;
-            }
-            root->book = aux->book; // troca informações
-            aux->book = book;
-            root->right = delete(root->right, book);
-        }
+        else root = hasTwoSon(root, book);
         
     }
     return root;
@@ -75,12 +68,23 @@ Nodo* withoutSon(Nodo* root) {
     return NULL;
 }
 
-Nodo* onlyOneSon(Nodo* root, Nodo* rootDirection) {
+Nodo* hasOneSon(Nodo* root, Nodo* rootDirection) {
     Nodo* aux = root;
     root = rootDirection;
     freeMemory(aux);
     return root;
 }
+
+Nodo* hasTwoSon(Nodo* root, Book* book) {
+    Nodo* aux = root->right;
+    while (aux->left != NULL) {
+        aux = aux->left;
+    }
+    root->book = aux->book; // troca informações
+    aux->book = book;
+    root->right = delete(root->right, book);
+    return root;
+} 
 
 void freeMemory(Nodo* nodo) {
     free(nodo);
@@ -100,9 +104,7 @@ Nodo* deleteAll(Nodo* root) {
         root->left = deleteAll(root->left);
         root->right = deleteAll(root->right);
         printf("Elemento deletado %d\n", root->book->issn);
-        free(root);
-        free(root->book);
-        free(root->book->name);
+        freeMemory(root);
     }
     return NULL;
 }
