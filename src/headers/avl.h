@@ -10,11 +10,11 @@ typedef struct sNodo {
 } Nodo ;
 
 Nodo* createNodo(int key);
-Nodo* rightRotate(Nodo* nodo);
-Nodo* leftRotate(Nodo* nodo);
-Nodo* insert(Nodo* nodo, int key);
+Nodo* rightRotate(Nodo* root);
+Nodo* leftRotate(Nodo* root);
+Nodo* insert(Nodo* root, int key);
 
-int getBalance(Nodo* nodo);
+int getBalance(Nodo* root);
 int height(Nodo* nodo);
 int max(int a, int b);
 void preOrder(Nodo* root);
