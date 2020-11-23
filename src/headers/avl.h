@@ -13,6 +13,8 @@ Nodo* createNodo(int key);
 Nodo* rightRotate(Nodo* root);
 Nodo* leftRotate(Nodo* root);
 Nodo* insert(Nodo* root, int key);
+Nodo* _delete(Nodo* root, int key);
+Nodo* minValueNodo(Nodo* root);
 
 int getBalance(Nodo* root);
 int height(Nodo* nodo);
