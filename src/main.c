@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "heap.c"
+#include "tree.c"
 
 int handleMenu();
 Nodo* handleInsert(Nodo*);

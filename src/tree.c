@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "headers/heap.h"
+#include "headers/tree.h"
 
 #include "book.c"
 

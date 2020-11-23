@@ -16,16 +16,16 @@ Book* createBook() {
 }
 
 void displayBook(Book* book) {
-    printf("issn: %d\n", book->issn);
-    printf("name: %s\n", book->name);
-    printf("year: %d\n\n", book->year);
+    printf("ISSN: %d\n", book->issn);
+    printf("Nome: %s\n", book->name);
+    printf("Ano: %d\n\n", book->year);
 }
 
 void getDataBook(Book* b) {
     printf("ISSN: ");
     scanf("%d", &b->issn);
-    printf("Name: ");
+    printf("Nome: ");
     scanf(" %[^\n]", b->name);
-    printf("Year: ");
+    printf("Ano: ");
     scanf("%d", &b->year);
 }
