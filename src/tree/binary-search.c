@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../headers/binary-search.h"
 
-#include "book.c"
+#include "../book.c"
 
 Nodo* createNodo() {
     Nodo* n = NULL;
@@ -28,8 +28,8 @@ Nodo* insert(Nodo* root, Book* book) {
 
 Nodo* _delete(Nodo* root, Book* book) {
     if (!root) return NULL;
-    else if (root->book->issn > book->issn) root->left = delete(root->left, book);
-    else if (root->book->issn < book->issn) root->right = delete(root->right, book);
+    else if (root->book->issn > book->issn) root->left = _delete(root->left, book);
+    else if (root->book->issn < book->issn) root->right = _delete(root->right, book);
     else {
         // Sem Filhos
         if (!root->left && !root->right) root = withoutSon(root);

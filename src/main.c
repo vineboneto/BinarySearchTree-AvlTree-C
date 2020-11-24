@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "tree.c"
+#include "tree/binary-search.c"
+// #include "book.c"
 
 int handleMenu();
 Nodo* handleInsert(Nodo*);
@@ -41,7 +42,7 @@ int handleMenu() {
 
 Nodo* handleInsert(Nodo* root) {
     Book* book = createBook();
-    root = insert(root, book);
+    return insert(root, book);
 }
 
 Nodo* handleDelete(Nodo* root) {
@@ -53,7 +54,7 @@ Nodo* handleDelete(Nodo* root) {
     if (!nodo) printf("Elemento nao existe!!\n");
     else {
         printf("Elemento deletado %d !\n", nodo->book->issn);
-        root = delete(root, nodo->book);
+        root = _delete(root, nodo->book);
     }
     return root;
 }

@@ -10,7 +10,7 @@ typedef struct sNodo {
 
 Nodo* createNodo();
 Nodo* insert(Nodo* root, Book* book);
-Nodo* delete (Nodo* root, Book* book);
+Nodo* _delete (Nodo* root, Book* book);
 Nodo* deleteAll(Nodo* root);
 Nodo* search(Nodo* nodo, int issn);
 Nodo* withoutSon(Nodo* root);

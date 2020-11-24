@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "../headers/avl.h"
 
+#include "../book.c"
+
 int main () {
 
     Nodo* root = NULL;
