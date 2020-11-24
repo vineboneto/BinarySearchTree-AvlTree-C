@@ -29,18 +29,9 @@ int main () {
     printf("Preorder traversal of the constructed AVL "
            "tree is \n"); 
     preOrder(root); 
-  
     root = _delete(root, 10); 
+    printf("\nRoot: %d\n", root->key);
   
-    /* The AVL Tree after deletion of 10 
-            1 
-           /  \ 
-          0    9 
-        /     /  \ 
-       -1    5     11 
-           /  \ 
-          2    6 
-    */
   
     printf("\nPreorder traversal after deletion of 10 \n"); 
     preOrder(root); 
@@ -68,24 +59,26 @@ Nodo* insert(Nodo* root, int key) {
     else if (key > root->key) root->right = insert(root->right, key);
     else return root;
 
-    // printf("Cheogu aqui\n");
     root->height = max(height(root->left), height(root->right)) + 1;
+    // Realiza o balanceamento da árvore
+    root = balanceInsert(root, key);
 
+    return root;
+}
+
+Nodo* balanceInsert(Nodo* root, int key) {
     int balance = getBalance(root);
-
-    // Caso Left Left
+    // Caso LL
     if (balance > 1 && key < root->left->key) return rightRotate(root);
-
-    //Caso Right Right
+    //Caso R
     if (balance < -1 && key > root->right->key) return leftRotate(root);
 
-    // Caso Left Right
+    // Caso LR
     if (balance > 1 && key > root->left->key) {
         root->left = leftRotate(root->left);
         return rightRotate(root);
     }
-
-    // Caso Right Left
+    // Caso RL
     if (balance < -1 && key < root->right->key) {
         root->right = rightRotate(root->right);
         return leftRotate(root);    
@@ -94,36 +87,96 @@ Nodo* insert(Nodo* root, int key) {
     return root;
 }
 
-Nodo* rightRotate(Nodo* nodoY) {
-    Nodo* nodoX = nodoY->left;
-    Nodo* nodoT2 = nodoX->right;
+Nodo* _delete(Nodo* root, int key) {
+    if (!root) return NULL;
+    else if (key < root->key) root->left = _delete(root->left, key);
+    else if (key > root->key) root->right = _delete(root->right, key);
+    else {
+        // Sem filhos ou com somente um filho
+        if (!root->left || !root->right) {
 
-    // Rotação
-    nodoX->right = nodoY;
-    nodoY->left = nodoT2; 
+            Nodo* temp = root->left ? root->left : root->right;
+            // Sem filhos
+            if (!temp) {
+                temp = root;
+                root = NULL;
+            } else *root = *temp; // Copia os dados para o root
 
-    // Atualizção de heights
-    nodoY->height = max(height(nodoY->left), height(nodoY->right)) + 1;
-    nodoX->height = max(height(nodoX->left), height(nodoX->right)) + 1;
-    
-    // Retorna o novo root
-    return nodoX;
+            free(temp);
+        // Possui dois filhos
+        } else {
+            // Captura o menor elemento a direita do root
+            Nodo* temp = minValueNodo(root->right);
+            root->key = temp->key; // Troca de dados
+            root->right = _delete(root->right, temp->key); // Deleta o elemento troca
+        }
+    }
+    // Se a arvore possui apenas um filho
+    if (!root) return root; 
+   // Calcular altura do no root
+    root->height = max(height(root->left), height(root->right)) + 1; 
+    // Realiza o balanceamento
+    root = balanceDelete(root);
+
+    return root;
 }
 
+Nodo* balanceDelete(Nodo* root) {
+    int balance = getBalance(root); 
+    // Caso LL
+    if (balance > 1 && getBalance(root->left) >= 0) return rightRotate(root); 
+    // Caso RR
+    if (balance < -1 && getBalance(root->right) <= 0) return leftRotate(root);  
+    // Caso LR
+    if (balance > 1 && getBalance(root->left) < 0) { 
+        root->left =  leftRotate(root->left); 
+        return rightRotate(root); 
+    } 
+    // Caso RL
+    if (balance < -1 && getBalance(root->right) > 0) { 
+        root->right = rightRotate(root->right); 
+        return leftRotate(root); 
+    }
+
+    return root;
+}
+
+Nodo* minValueNodo(Nodo* nodo) {
+    Nodo* current = nodo;
+    while (nodo->left != NULL) {
+        current = current->left;
+    }
+    return current;
+}
+
+// Realiza a  rotação a esquerda
 Nodo* leftRotate(Nodo* nodoX) {
+    // Auxliares
     Nodo* nodoY = nodoX->right;
     Nodo* nodoT2 = nodoY->left;
-
     // Rotação
     nodoY->left = nodoX;
     nodoX->right = nodoT2;
-
     // Atualizção de heights
     nodoX->height = max(height(nodoX->left), height(nodoX->right)) + 1;
     nodoY->height = max(height(nodoY->left), height(nodoY->right)) + 1;
-
     // Retorna o novo root
     return nodoY;
+}
+
+// Realiza a  rotação a direita
+Nodo* rightRotate(Nodo* nodoY) {
+    // Auxliares
+    Nodo* nodoX = nodoY->left;
+    Nodo* nodoT2 = nodoX->right;
+    // Rotação
+    nodoX->right = nodoY;
+    nodoY->left = nodoT2; 
+    // Atualizção de heights
+    nodoY->height = max(height(nodoY->left), height(nodoY->right)) + 1;
+    nodoX->height = max(height(nodoX->left), height(nodoX->right)) + 1;
+    // Retorna o novo root
+    return nodoX;
 }
 
 int max(int a, int b) {
@@ -148,61 +201,3 @@ void preOrder(Nodo* root) {
     }
 }
 
-Nodo* _delete(Nodo* root, int key) {
-    if (!root) return NULL;
-    else if (key < root->key) root->left = _delete(root->left, key);
-    else if (key > root->key) root->right = _delete(root->right, key);
-    else {
-        // Sem filhos ou com somente um filho
-        if (!root->left || !root->right) {
-            Nodo* temp = root->left ? root->left : root->right;
-
-            // Sem filhos
-            if (!temp) {
-                temp = root;
-                root = NULL;
-            } else *root = *temp;
-
-            free(temp);
-        // Possui dois filhos
-        } else {
-            Nodo* temp = minValueNodo(root->right);
-            root->key = temp->key;
-            root->right = _delete(root->right, temp->key);
-        }
-    }
-
-    // Se a arvore possui apenas um filho
-    if (!root) return root; 
-   
-    root->height = max(height(root->left), height(root->right)) + 1; 
-  
-    int balance = getBalance(root); 
-
-    // Caso Left Left
-    if (balance > 1 && getBalance(root->left) >= 0) return rightRotate(root); 
-
-    // Caso Right Right 
-    if (balance < -1 && getBalance(root->right) <= 0) return leftRotate(root); 
-  
-    // Caso Left Right
-    if (balance > 1 && getBalance(root->left) < 0) { 
-        root->left =  leftRotate(root->left); 
-        return rightRotate(root); 
-    } 
-  
-    // Caso Right Left
-    if (balance < -1 && getBalance(root->right) > 0) { 
-        root->right = rightRotate(root->right); 
-        return leftRotate(root); 
-    } 
-    return root;
-}
-
-Nodo* minValueNodo(Nodo* nodo) {
-    Nodo* current = nodo;
-    while (nodo->left != NULL) {
-        current = current->left;
-    }
-    return current;
-}

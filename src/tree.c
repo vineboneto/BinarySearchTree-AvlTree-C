@@ -7,11 +7,11 @@
 Nodo* createNodo() {
     Nodo* n = NULL;
     n = (Nodo*) malloc(sizeof(Nodo));
-    n->left = n->right = NULL;
     if (!n) {
         exit(EXIT_FAILURE);
         perror("Overflow!!!");
     }
+    n->left = n->right = NULL;
     return n;
 }
 
@@ -61,8 +61,8 @@ Nodo* hasTwoSon(Nodo* root, Book* book) {
     while (aux->left != NULL) {
         aux = aux->left;
     }
-    root->book = aux->book; // troca informações
-    aux->book = book;
+    root->book = aux->book; // Troca dados
+    aux->book = book; // Troca dados
     root->right = delete(root->right, book);
     return root;
 } 
