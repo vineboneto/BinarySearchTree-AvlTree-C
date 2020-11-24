@@ -30,8 +30,8 @@ int main () {
            "tree is \n"); 
     preOrder(root); 
     root = _delete(root, 10); 
-    printf("\nRoot: %d\n", root->key);
-  
+    root = _delete(root, 0);
+    root = _delete(root, 9);
   
     printf("\nPreorder traversal after deletion of 10 \n"); 
     preOrder(root); 
@@ -93,23 +93,9 @@ Nodo* _delete(Nodo* root, int key) {
     else if (key > root->key) root->right = _delete(root->right, key);
     else {
         // Sem filhos ou com somente um filho
-        if (!root->left || !root->right) {
-
-            Nodo* temp = root->left ? root->left : root->right;
-            // Sem filhos
-            if (!temp) {
-                temp = root;
-                root = NULL;
-            } else *root = *temp; // Copia os dados para o root
-
-            free(temp);
+        if (!root->left || !root->right) root = hasOneOrNoSon(root);
         // Possui dois filhos
-        } else {
-            // Captura o menor elemento a direita do root
-            Nodo* temp = minValueNodo(root->right);
-            root->key = temp->key; // Troca de dados
-            root->right = _delete(root->right, temp->key); // Deleta o elemento troca
-        }
+        else root = hasTwoSon(root);
     }
     // Se a arvore possui apenas um filho
     if (!root) return root; 
@@ -118,6 +104,28 @@ Nodo* _delete(Nodo* root, int key) {
     // Realiza o balanceamento
     root = balanceDelete(root);
 
+    return root;
+}
+
+Nodo* hasOneOrNoSon(Nodo* root) {
+    // Seleciona o filho que estiver com algum valor, caso nenhum tenha seleciona nulo
+    Nodo* temp = root->left ? root->left : root->right;
+    // Sem filhos
+    if (!temp) {
+        temp = root;
+        root = NULL;
+    } else *root = *temp; // Copia os dados para o root
+    free(temp);
+    return root;
+}
+
+Nodo* hasTwoSon(Nodo* root) {
+    // Captura o menor elemento a direita do root
+    Nodo* temp = minValueNodo(root->right);
+    // Troca de dados
+    root->key = temp->key;
+    // Deleta o elemento troca
+    root->right = _delete(root->right, temp->key);
     return root;
 }
 

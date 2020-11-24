@@ -20,6 +20,10 @@ Nodo* leftRotate(Nodo* root);
 Nodo* insert(Nodo* root, int key);
 /* Realiza a remoção do nodo na árovre AVL */
 Nodo* _delete(Nodo* root, int key);
+/* Aplica a remoção do elemento caso o nodo tenha apenas um ou nenhum filho */
+Nodo* hasOneOrNoSon(Nodo* root);
+/* Aplica a remoção do elemento caso o nodo tenha dois filhos */
+Nodo* hasTwoSon(Nodo* root);
 /* Pega o menor da valor da subárvore do nodo */
 Nodo* minValueNodo(Nodo* root);
 /* Realiza o balanceamento ao remover um elemento */
