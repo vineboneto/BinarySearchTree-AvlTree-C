@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "headers/book.h"
+#include "../headers/book.h"
 
 Book* createBook() {
     Book* b = NULL;
@@ -11,7 +11,7 @@ Book* createBook() {
         perror("Overflow!!");
     }
     b->name = (char*) malloc(bytes);
-    getDataBook(b);
+    setDataBook(b);
     return b;
 }
 
@@ -21,7 +21,7 @@ void displayBook(Book* book) {
     printf("Ano: %d\n\n", book->year);
 }
 
-void getDataBook(Book* b) {
+void setDataBook(Book* b) {
     printf("ISSN: ");
     scanf("%d", &b->issn);
     printf("Nome: ");

@@ -2,45 +2,9 @@
 #include <stdlib.h>
 #include "../headers/avl.h"
 
-#include "../book.c"
+#include "book.c"
 
-int main () {
-
-    Nodo* root = NULL;
-  /* Constructing tree given in the above figure */
-    root = insert(root, 9); 
-    root = insert(root, 5); 
-    root = insert(root, 10); 
-    root = insert(root, 0); 
-    root = insert(root, 6); 
-    root = insert(root, 11); 
-    root = insert(root, -1); 
-    root = insert(root, 1); 
-    root = insert(root, 2); 
-  
-    /* The constructed AVL Tree would be 
-            9 
-           /  \ 
-          1    10 
-        /  \     \ 
-       0    5     11 
-      /    /  \ 
-     -1   2    6 
-    */
-  
-    printf("Preorder traversal of the constructed AVL "
-           "tree is \n"); 
-    preOrder(root); 
-    root = _delete(root, 10); 
-    root = _delete(root, 0);
-    root = _delete(root, 9);
-  
-    printf("\nPreorder traversal after deletion of 10 \n"); 
-    preOrder(root); 
-    return EXIT_SUCCESS;
-}
-
-Nodo* createNodo(int key) {
+Nodo* createNodo(Book* book) {
     Nodo* n = NULL;
     n = (Nodo*) malloc(sizeof(Nodo));
     if (!n) {
@@ -49,39 +13,39 @@ Nodo* createNodo(int key) {
     }
     n->left = n->right = NULL;
     n->height = 1;
-    n->key = key;
+    n->book = book;
     return n;
 }
 
-Nodo* insert(Nodo* root, int key) {
+Nodo* insert(Nodo* root, Book* book) {
     // Primeiro elemento
-    if (!root) return createNodo(key);
+    if (!root) return createNodo(book);
 
-    if (key < root->key) root->left = insert(root->left, key);
-    else if (key > root->key) root->right = insert(root->right, key);
+    if (book->issn < root->book->issn) root->left = insert(root->left, book);
+    else if (book->issn > root->book->issn) root->right = insert(root->right, book);
     else return root;
 
     root->height = max(height(root->left), height(root->right)) + 1;
     // Realiza o balanceamento da árvore
-    root = balanceInsert(root, key);
+    root = balanceInsert(root, book);
 
     return root;
 }
 
-Nodo* balanceInsert(Nodo* root, int key) {
+Nodo* balanceInsert(Nodo* root, Book* book) {
     int balance = getBalance(root);
     // Caso LL
-    if (balance > 1 && key < root->left->key) return rightRotate(root);
+    if (balance > 1 && book->issn < root->left->book->issn) return rightRotate(root);
     //Caso R
-    if (balance < -1 && key > root->right->key) return leftRotate(root);
+    if (balance < -1 && book->issn > root->right->book->issn) return leftRotate(root);
 
     // Caso LR
-    if (balance > 1 && key > root->left->key) {
+    if (balance > 1 && book->issn > root->left->book->issn) {
         root->left = leftRotate(root->left);
         return rightRotate(root);
     }
     // Caso RL
-    if (balance < -1 && key < root->right->key) {
+    if (balance < -1 && book->issn < root->right->book->issn) {
         root->right = rightRotate(root->right);
         return leftRotate(root);    
     }
@@ -89,15 +53,15 @@ Nodo* balanceInsert(Nodo* root, int key) {
     return root;
 }
 
-Nodo* _delete(Nodo* root, int key) {
+Nodo* _delete(Nodo* root, Book* book) {
     if (!root) return NULL;
-    else if (key < root->key) root->left = _delete(root->left, key);
-    else if (key > root->key) root->right = _delete(root->right, key);
+    else if (book->issn < root->book->issn) root->left = _delete(root->left, book);
+    else if (book->issn > root->book->issn) root->right = _delete(root->right, book);
     else {
         // Sem filhos ou com somente um filho
         if (!root->left || !root->right) root = hasOneOrNoSon(root);
         // Possui dois filhos
-        else root = hasTwoSon(root);
+        else root = hasTwoSon(root, book);
     }
     // Se a arvore possui apenas um filho
     if (!root) return root; 
@@ -117,17 +81,18 @@ Nodo* hasOneOrNoSon(Nodo* root) {
         temp = root;
         root = NULL;
     } else *root = *temp; // Copia os dados para o root
-    free(temp);
+    freeMemory(temp);
     return root;
 }
 
-Nodo* hasTwoSon(Nodo* root) {
+Nodo* hasTwoSon(Nodo* root, Book* book) {
     // Captura o menor elemento a direita do root
     Nodo* temp = minValueNodo(root->right);
     // Troca de dados
-    root->key = temp->key;
+    root->book = temp->book;
+    temp->book = book;
     // Deleta o elemento troca
-    root->right = _delete(root->right, temp->key);
+    root->right = _delete(root->right, book);
     return root;
 }
 
@@ -153,7 +118,8 @@ Nodo* balanceDelete(Nodo* root) {
 
 Nodo* minValueNodo(Nodo* nodo) {
     Nodo* current = nodo;
-    while (nodo->left != NULL) {
+
+    while (current->left != NULL) {
         current = current->left;
     }
     return current;
@@ -203,11 +169,50 @@ int getBalance(Nodo* root) {
     return height(root->left) - height(root->right);
 }
 
+void order(Nodo* nodo) {
+    if (nodo) {
+        order(nodo->left);
+        displayBook(nodo->book);
+        order(nodo->right);
+    }
+}
+
 void preOrder(Nodo* root) {
     if (root) {
-        printf("%d ", root->key); 
+        displayBook(root->book);
         preOrder(root->left); 
         preOrder(root->right); 
     }
+}
+
+void posOrder(Nodo* nodo) {
+    if (nodo) {
+        posOrder(nodo->left);
+        posOrder(nodo->right);
+        displayBook(nodo->book);
+    }
+}
+
+Nodo* search(Nodo* root, int issn) {
+    if (!root) return NULL;
+    else if (root->book->issn > issn) return search(root->left, issn);
+    else if (root->book->issn < issn) return search(root->right, issn);
+    else return root;
+}
+
+Nodo* deleteAll(Nodo* root) {
+    if (root) {
+        root->left = deleteAll(root->left);
+        root->right = deleteAll(root->right);
+        printf("Elemento deletado %d\n", root->book->issn);
+        freeMemory(root);
+    }
+    return NULL;
+}
+
+void freeMemory(Nodo* nodo) {
+    free(nodo);
+    free(nodo->book);
+    free(nodo->book->name);
 }
 

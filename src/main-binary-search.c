@@ -40,8 +40,7 @@ int handleMenu() {
 }
 
 Nodo* handleInsert(Nodo* root) {
-    Book* book = createBook();
-    return insert(root, book);
+    return insert(root, createBook());
 }
 
 Nodo* handleDelete(Nodo* root) {

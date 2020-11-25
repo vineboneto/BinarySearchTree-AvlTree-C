@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include "../headers/binary-search.h"
 
-#include "../book.c"
+#include "book.c"
 
-Nodo* createNodo() {
+Nodo* createNodo(Book* book) {
     Nodo* n = NULL;
     n = (Nodo*) malloc(sizeof(Nodo));
     if (!n) {
@@ -12,14 +12,12 @@ Nodo* createNodo() {
         perror("Overflow!!!");
     }
     n->left = n->right = NULL;
+    n->book = book;
     return n;
 }
 
 Nodo* insert(Nodo* root, Book* book) {
-    if (!root) {
-        root = createNodo();
-        root->book = book;
-    } 
+    if (!root) return createNodo(book);
     else if (book->issn < root->book->issn) root->left = insert(root->left, book);
     else root->right = insert(root->right, book);
 
