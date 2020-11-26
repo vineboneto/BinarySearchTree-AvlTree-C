@@ -1,0 +1,47 @@
+
+Inserção
+                            Altura                
+                9       -     2             
+               /  \  
+            NULL   11   -     1
+                                           
+                            
+ 
+
+------------------------------------------------------------
+Balanceamento Inserção                             
+                               Altura                        
+                9               -> 4                    9   -> X                          11 
+               / \                                      11  -> Y                          / \
+              8   11            -> 3                    10  -> T2                        9   12
+                  / \                                                                   / \    \
+                 10  12         -> 2                                                   8   10   13
+                       \                   -> RR ->     Y->left = 9         ->      
+                      _13_      -> 1                    X->right = 10                       
+                                                                                    
+                                                                                                
+
+RR: balanço < -1 && dado inserido > root->right
+RL: balanço < -1 && dado inserido < root->right
+LL: balanço > 1 && dado inserido < root->left
+LR: balanço > 1 && dado inserido > root->left
+                     
+---------------------------------------------------------------
+
+Balanceamento Remoção
+                           
+         11                                                  11 -> Y                                9
+        /                                                     9 -> X              ->               / \
+       9                    -> LL ->                         10 -> T2                             8   11
+      / \                                                                                            /
+     8  10                                                  X->right = 11                          10
+                                                            Y->left = 10
+
+LL: balanco > 1 && balanço do nodo da esquerda >= 0 -> Implica que temos mais  ou a mesma quantidade de elementos a esquerda
+LR: balanco > 1 && balanço do nodo da esquerda  < 0 -> Implica que temos uma  quantidade menor de elementos a esquerda
+RR: balanco < -1 && balanço do nodo da direita <= 0 -> Implica que temos mais  ou a mesma quantidade de elementos a direita
+RL: balanco < -1 && balanço do nodo da direita > 0 -> IImplica que temos uma  quantidade menor de elementos a direita
+
+
+
+                                

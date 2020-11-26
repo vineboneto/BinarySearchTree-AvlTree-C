@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 /* Escolha aqui a árvore que desejá 'avl' ou 'binary-search' */
-#include "tree/binary-search.c"
+#include "tree/avl.c"
 
 int handleMenu();
 Nodo* handleInsert(Nodo*);
