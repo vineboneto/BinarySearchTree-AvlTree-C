@@ -21,7 +21,7 @@ Nodo* insert(Nodo* root, Book* book) {
     // Primeiro elemento
     if (!root) return createNodo(book);
 
-    if (book->issn < root->book->issn) root->left = insert(root->left, book);
+    else if (book->issn < root->book->issn) root->left = insert(root->left, book);
     else if (book->issn > root->book->issn) root->right = insert(root->right, book);
     else return root;
 
@@ -33,10 +33,11 @@ Nodo* insert(Nodo* root, Book* book) {
 }
 
 Nodo* balanceInsert(Nodo* root, Book* book) {
+    // Calcula o fator de balanceamento
     int balance = getBalance(root);
     // Caso LL
     if (balance > 1 && book->issn < root->left->book->issn) return rightRotate(root);
-    //Caso R
+    //Caso RR
     if (balance < -1 && book->issn > root->right->book->issn) return leftRotate(root);
 
     // Caso LR
@@ -116,14 +117,6 @@ Nodo* balanceDelete(Nodo* root) {
     return root;
 }
 
-Nodo* minValueNodo(Nodo* nodo) {
-    Nodo* current = nodo;
-
-    while (current->left != NULL) {
-        current = current->left;
-    }
-    return current;
-}
 
 // Realiza a  rotação a esquerda
 Nodo* leftRotate(Nodo* nodoX) {
@@ -169,6 +162,32 @@ int getBalance(Nodo* root) {
     return height(root->left) - height(root->right);
 }
 
+Nodo* minValueNodo(Nodo* nodo) {
+    Nodo* current = nodo;
+
+    while (current->left != NULL) {
+        current = current->left;
+    }
+    return current;
+}
+
+Nodo* search(Nodo* root, int issn) {
+    if (!root) return NULL;
+    else if (root->book->issn > issn) return search(root->left, issn);
+    else if (root->book->issn < issn) return search(root->right, issn);
+    else return root;
+}
+
+Nodo* deleteAll(Nodo* root) {
+    if (root) {
+        root->left = deleteAll(root->left);
+        root->right = deleteAll(root->right);
+        printf("Elemento deletado %d\n", root->book->issn);
+        freeMemory(root);
+    }
+    return NULL;
+}
+
 void order(Nodo* nodo) {
     if (nodo) {
         order(nodo->left);
@@ -191,23 +210,6 @@ void posOrder(Nodo* nodo) {
         posOrder(nodo->right);
         displayBook(nodo->book);
     }
-}
-
-Nodo* search(Nodo* root, int issn) {
-    if (!root) return NULL;
-    else if (root->book->issn > issn) return search(root->left, issn);
-    else if (root->book->issn < issn) return search(root->right, issn);
-    else return root;
-}
-
-Nodo* deleteAll(Nodo* root) {
-    if (root) {
-        root->left = deleteAll(root->left);
-        root->right = deleteAll(root->right);
-        printf("Elemento deletado %d\n", root->book->issn);
-        freeMemory(root);
-    }
-    return NULL;
 }
 
 void freeMemory(Nodo* nodo) {
